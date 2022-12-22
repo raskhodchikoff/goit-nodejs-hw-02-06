@@ -6,18 +6,16 @@ const addContact = require('../../controllers/addContact')
 const removeContactById = require('../../controllers/removeContactById')
 const updateContactById = require('../../controllers/updateContactById')
 
-const { controllerWrapper } = require('../../helpers/controllerWrapper')
-
 const router = express.Router()
 
-router.get('/', controllerWrapper(getAllContacts))
+router.get('/', getAllContacts)
 
-router.get('/:contactId', controllerWrapper(getContactById))
+router.get('/:contactId', getContactById)
 
-router.post('/', controllerWrapper(addContact))
+router.post('/', addContact)
 
-router.delete('/:contactId', controllerWrapper(removeContactById))
+router.delete('/:contactId', removeContactById)
 
-router.put('/:contactId', controllerWrapper(updateContactById))
+router.put('/:contactId', updateContactById)
 
 module.exports = router
