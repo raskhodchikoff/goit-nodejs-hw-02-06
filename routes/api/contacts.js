@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const controller = require('../../controllers/')
+const controller = require('../../controllers/contacts')
 
 const validation = require('../../middlewares/validation')
 const { addSchema, updateFavoriteSchema } = require('../../models/contact')
