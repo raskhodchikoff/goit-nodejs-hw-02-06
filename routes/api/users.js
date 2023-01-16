@@ -6,6 +6,7 @@ const {
   controllerWrapper,
   validation,
   authenticate,
+  upload,
 } = require('../../middlewares')
 const { schemas } = require('../../models/user')
 
@@ -24,5 +25,12 @@ router.post(
 router.get('/current', authenticate, controllerWrapper(controller.getCurrent))
 
 router.post('/logout', authenticate, controllerWrapper(controller.logout))
+
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  controllerWrapper(controller.updateAvatar)
+)
 
 module.exports = router
