@@ -1,7 +1,10 @@
 const bcrypt = require('bcrypt')
-
 const gravatar = require('gravatar')
 const { User } = require('../../models/user')
+const { nanoid } = require('nanoid')
+const { sendEmail } = require('../../helpers')
+
+const { BASE_URL, SENDGRID_SENDER } = process.env
 
 const register = async (req, res) => {
   const { email, password } = req.body
@@ -11,12 +14,24 @@ const register = async (req, res) => {
   }
   const hashPassword = await bcrypt.hash(password, 10)
   const avatarURL = gravatar.url(email)
+  const verificationToken = nanoid()
 
   const newUser = await User.create({
     email,
     password: hashPassword,
     avatarURL,
+    verificationToken,
   })
+
+  const verifyEmail = {
+    to: email,
+    from: `${SENDGRID_SENDER}`,
+    subject: 'Verify email',
+    html: `a target="_blank" href="${BASE_URL}/api/users/verify/${verificationToken}">Click verify email</a>`,
+  }
+
+  await sendEmail(verifyEmail)
+
   res.status(201).json({
     status: 'Created',
     code: 201,
